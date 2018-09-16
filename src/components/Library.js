@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 class Library extends Component {
   constructor(props) {
-  super(props);
-  this.state = { albums: albumData };
+    super(props);
+    this.state = { albums: albumData };
   }
 
   render() {
@@ -19,8 +19,6 @@ class Library extends Component {
           <div>{album.songs.length} songs</div>
         </Link>
         )}
-
-
      </section>
     );
   }
