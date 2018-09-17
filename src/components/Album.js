@@ -11,7 +11,8 @@
      this.state = {
        album: album,
        currentSong: album.songs[0],
-       isPlaying: false
+       isPlaying: false,
+       hoveredSong: ''
      };
 
      this.audioElement = document.createElement('audio');
@@ -40,11 +41,30 @@
     if (this.state.isPlaying && isSameSong) {
       this.pause();
     } else {
-      if (!isSameSong) { this.setSong(song); } 
+      if (!isSameSong) { this.setSong(song); }
       this.play();
     }
   }
 
+  mouseEnter(song) {
+    this.setState({ hoveredSong: song });
+  }
+
+  mouseLeave() {
+    this.setState({ hoveredSong: '' });
+  }
+
+  cellEntry(song, index) {
+    if (this.state.isPlaying === true && song === this.state.currentSong){
+      return <span className="icon ion-md-pause"></span>
+    } else if (this.state.isPlaying === false && song === this.state.currentSong && this.audioElement.currentTime != 0){
+      return <span className="icon ion-md-play"></span>
+    } else if ( this.state.hoveredSong === song  ) {
+      return <span className="icon ion-md-play"></span>
+    } else {
+      return index + 1;
+    }
+  }
 
 
    render() {
@@ -72,8 +92,8 @@
               <th>Duration</th>
             </tr>
             {this.state.album.songs.map( (song, index) =>
-              <tr className="song" key={index} onClick={() => this.handleSongClick(song)} >
-                <td>{index+1}</td>
+              <tr className="song" key={index} onClick={ () => this.handleSongClick(song) } onMouseEnter={ () => this.mouseEnter(song) } onMouseLeave={ () => this.mouseLeave() } >
+                <td>{ this.cellEntry(song, index) }</td>
                 <td>{song.title}</td>
                 <td>{song.duration}</td>
               </tr>
