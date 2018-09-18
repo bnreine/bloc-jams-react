@@ -13,6 +13,7 @@
        album: album,
        currentSong: album.songs[0],
        currentTime: 0,
+       volume: 0.2,
        duration: album.songs[0].duration,
        isPlaying: false,
        hoveredSong: ''
@@ -20,6 +21,7 @@
 
      this.audioElement = document.createElement('audio');
      this.audioElement.src = album.songs[0].audioSrc;
+     this.audioElement.volume=this.state.volume;
    }
 
 
@@ -41,10 +43,15 @@
       },
       durationchange: e => {
         this.setState({ duration: this.audioElement.duration });
+      },
+      volumechange: e => {
+        this.setState({ volume: this.audioElement.volume })
       }
+
     };
     this.audioElement.addEventListener('timeupdate', this.eventListeners.timeupdate);
     this.audioElement.addEventListener('durationchange', this.eventListeners.durationchange);
+    this.audioElement.addEventListener('volumechange', this.eventListeners.volumechange);
   }
 
 
@@ -52,6 +59,7 @@
     this.audioElement.src = null;
     this.audioElement.removeEventListener('timeupdate', this.eventListeners.timeupdate);
     this.audioElement.removeEventListener('durationchange', this.eventListeners.durationchange);
+    this.audioElement.removeEventListener('volumechange', this.eventListeners.volumechange);
   }
 
 
@@ -117,8 +125,24 @@
   }
 
 
+  handleVolumeChange(e) {
+    const newVolume = e.target.value;
+    this.audioElement.volume = newVolume;
+    this.setState({ volume: newVolume});
+  }
 
 
+  formatTime(time) {  //time in seconds, as a float
+    if ("number" != typeof time) {
+      return "-:--";
+    }
+    const roundedTime=Math.round(time);  //rounds time to nearest second
+    const minutes=Math.floor(roundedTime / 60);  //number of whole minutes
+    const seconds=roundedTime % 60; //number of seconds
+    const tensSeconds=Math.floor(seconds / 10); //tens digit in seconds
+    const onesSeconds=seconds % 10; //ones digit in seconds
+    return `${minutes}:${tensSeconds}${onesSeconds}`;
+  }
 
 
    render() {
@@ -149,7 +173,7 @@
               <tr className="song" key={index} onClick={ () => this.handleSongClick(song) } onMouseEnter={ () => this.mouseEnter(song) } onMouseLeave={ () => this.mouseLeave() } >
                 <td>{ this.cellEntry(song, index) }</td>
                 <td>{song.title}</td>
-                <td>{song.duration}</td>
+                <td>{this.formatTime(parseFloat(song.duration))}</td>
               </tr>
               )
             }
@@ -163,10 +187,13 @@
           currentSong={this.state.currentSong}
           currentTime={this.audioElement.currentTime}
           duration={this.audioElement.duration}
+          volume={this.audioElement.volume}
           handleSongClick={() => this.handleSongClick(this.state.currentSong)}
           handlePrevClick={() => this.handlePrevClick()}
           handleNextClick={() => this.handleNextClick()}
           handleTimeChange={(e) => this.handleTimeChange(e)}
+          handleVolumeChange={(e) => this.handleVolumeChange(e)}
+          formatTime={this.formatTime}
         />
 
 
