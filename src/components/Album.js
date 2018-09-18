@@ -147,40 +147,43 @@
 
    render() {
      return (
-       <section className="album">
-        <section id="album-info">
-          <img id="album-cover-art" src={this.state.album.albumCover} alt={this.state.album.title}/>
-          <div className="album-details">
-            <h1 id="album-title">{this.state.album.title}</h1>
-            <h2 className="artist">{this.state.album.artist}</h2>
-            <div id="release-info">{this.state.album.releaseInfo}</div>
-          </div>
-        </section>
 
-        <table id="song-list">
-          <colgroup>
-            <col id="song-number-column" />
-            <col id="song-title-column" />
-            <col id="song-duration-column" />
-          </colgroup>
-          <tbody>
+       <section className="album">
+
+        <div className="mdl-card">
+          <div className="mdl-card__title">
+            <h2 className="mdl-card__title-text">{this.state.album.title}</h2>
+          </div>
+          <div className="mdl-card__media">
+            <img src={this.state.album.albumCover} alt={this.state.album.title} />
+          </div>
+          <div className="mdl-card__supporting-text">
+            {this.state.album.artist}
+          </div>
+          <div className="mdl-card__supporting-text">
+            {this.state.album.releaseInfo}
+          </div>
+        </div>
+
+        <table className="mdl-data-table mdl-js-table">
+          <thead>
             <tr>
-              <th>Song number</th>
-              <th>Title</th>
-              <th>Duration</th>
+              <th className="mdl-data-table__cell--non-mumeric">Song number</th>
+              <th className="mdl-data-table__cell--non-mumeric">Title</th>
+              <th className="mdl-data-table__cell--non-mumeric">Duration</th>
             </tr>
+          </thead>
+          <tbody>
             {this.state.album.songs.map( (song, index) =>
               <tr className="song" key={index} onClick={ () => this.handleSongClick(song) } onMouseEnter={ () => this.mouseEnter(song) } onMouseLeave={ () => this.mouseLeave() } >
-                <td>{ this.cellEntry(song, index) }</td>
-                <td>{song.title}</td>
-                <td>{this.formatTime(parseFloat(song.duration))}</td>
+                <td className="mdl-data-table__cell--non-numeric">{ this.cellEntry(song, index) }</td>
+                <td className="mdl-data-table__cell--non-numeric">{song.title}</td>
+                <td className="mdl-data-table__cell--non-numeric">{this.formatTime(parseFloat(song.duration))}</td>
               </tr>
               )
             }
           </tbody>
         </table>
-
-
 
         <PlayerBar
           isPlaying={this.state.isPlaying}
@@ -195,8 +198,6 @@
           handleVolumeChange={(e) => this.handleVolumeChange(e)}
           formatTime={this.formatTime}
         />
-
-
 
        </section>
      );
