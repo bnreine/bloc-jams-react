@@ -12,23 +12,23 @@ class App extends Component {
         <header className="mdl-layout__header">
           <div className="mdl-layout-icon"></div>
           <div className="mdl-layout__header-row">
-            <span className="mdl-layout__title">Bloc Jams</span>
+            <span className="mdl-layout__title">Live Music Player</span>
             <div className="mdl-layout-spacer"></div>
             <nav className="mdl-navigation">
-              <Link to='/' className="mdl-navigation__link">Landing</Link>
+              <Link to='/' className="mdl-navigation__link">Home</Link>
               <Link to='/library' className="mdl-navigation__link">Library</Link>
             </nav>
           </div>
         </header>
         <div className="mdl-layout__drawer">
-          <span className="mdl-layout__title">Bloc Jams</span>
+          <span className="mdl-layout__title">Live Music Player</span>
           <nav className="mdl-navigation">
-            <Link to='/' className="mdl-navigation__link">Landing</Link>
+            <Link to='/' className="mdl-navigation__link">Home</Link>
             <Link to='/library' className="mdl-navigation__link">Library</Link>
           </nav>
         </div>
 
-        <main className="mdl-layout__content">
+        <main className="main-content">
           <Route exact path="/" component={Landing} />
           <Route path="/library" component={Library} />
           <Route path="/album/:slug" component={Album} />
